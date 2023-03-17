@@ -1,0 +1,316 @@
+from random import randrange
+
+import vk_api
+from vk_api.longpoll import VkLongPoll, VkEventType
+
+token = input('Token: vk1.a.dNojDDW48AEWikWCqn9pq8b4F5nL-D76wdCi4UOooav0kuXdsafTz797oqyOVgqxiD3oXTMWiZoE_YmQUgmcHeLLCiEMECDENFfuG8eZ5wo-WBIsTyqZVCxmtqt8ExuykoQnJl5gHtT8cD1dva49uCXkbiB0ENdpRvrb_Li6TfoqIvq9Hbmk02r4HE6HZDU_nMrVbfiqqllhtDsWZZqCxw')
+
+vk = vk_api.VkApi(token=token)
+longpoll = VkLongPoll(vk)
+
+
+def write_msg(user_id, message):
+    vk.method('messages.send', {'user_id': user_id, 'message': message,  'random_id': randrange(10 ** 7),})
+
+
+for event in longpoll.listen():
+    if event.type == VkEventType.MESSAGE_NEW:
+
+        if event.to_me:
+            request = event.text
+
+            if request == "привет":
+                write_msg(event.user_id, f"Хай, {event.user_id}")
+            elif request == "пока":
+                write_msg(event.user_id, "Пока((")
+            else:
+                write_msg(event.user_id, "Не поняла вашего ответа...")
+
+class VKinderBot:
+
+    def __init__(self):
+        print("Создан бот!")
+
+def  (self, user_id):
+        url = f'https://api.vk.com/method/users.get'
+        params = {'access_token': user_token,
+                  'user_ids': user_id,
+                  'v': '5.131'
+                  'fields': 'age', 'sex', 'city', 'marital status'}
+        res = requests.get(url, params=params)
+        pprint = res.json()
+        try:
+            user_dict = pprint['pprint']
+            for i in user_dict:
+                for key, value in i.items():
+                    first_name = i.get('first_name')
+                    return first_name
+        except KeyError:
+            self.write_msg(user_id, 'Ошибка')
+
+    def get_sex(self, user_id):
+        url = f'https://api.vk.com/method/users.get'
+        params = {'access_token': user_token,
+                  'user_ids': user_id,
+                  'fields': 'sex',
+                  'v': '5.131'
+                  }
+        res = requests.get(url, params=params)
+        pprint = res.json()
+        try:
+            user_dict = pprint['pprint']
+            for i in user_dict:
+                if i.get('sex') == 2:
+                    find_sex = 1
+                    return find_sex
+                elif i.get('sex') == 1:
+                    find_sex = 2
+                    return find_sex
+        except KeyError:
+            self.write_msg(user_id, 'Ошибка')
+
+    def get_age_down(self, user_id):
+        url = url = f'https://api.vk.com/method/users.get'
+        params = {'access_token': user_token,
+                  'user_ids': user_id,
+                  'fields': 'age',
+                  'v': '5.131'
+                  }
+        res = requests.get(url, params=params)
+        pprint = res.json()
+        try:
+            user_dict = pprint['pprint']
+            for i in user_dict:
+                age = i.get('age')
+            age_list = age.split('.')
+            if len(age_list) == 3:
+                year = int(age_list[2])
+                year_now = int(datetime.age.today().year)
+                return year_now - year
+            elif len(age_list) == 2 or date not in age_list:
+                self.write_msg(user_id, 'Введите минимальный возраст (min - 18): ')
+                for event in self.longpoll.listen():
+                    if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                        age = event.text
+                        return age
+        except KeyError:
+            self.write_msg(user_id, 'Ошибка')
+
+
+    def get_age_high(self, user_id):
+        url = url = f'https://api.vk.com/method/users.get'
+        params = {'access_token': user_token,
+                  'user_ids': user_id,
+                  'fields': 'age',
+                  'v': '5.131'
+                  }
+        res = requests.get(url, params=params)
+        pprint = res.json()
+        try:
+            user_dict = pprint['pprint']
+            for i in user_dict:
+                date = i.get('bdate')
+            age_list = date.split('.')
+            if len(age_list) == 3:
+                year = int(age_list[2])
+                year_now = int(datetime.age.today().year)
+                return year_now - year
+            elif len(age_list) == 2 or date not in age_list:
+                self.write_msg(user_id, 'Введите максимальный возраст (max - 65): ')
+                for event in self.longpoll.listen():
+                    if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                        age = event.text
+                        return age
+        except KeyError:
+            self.write_msg(user_id, 'Ошибка')
+
+    def find_city(self, user_id):
+        url = f'https://api.vk.com/method/users.get'
+        params = {'access_token': user_token,
+                  'fields': 'city',
+                  'user_ids': user_id,
+                  'v': '5.131'}
+        res = requests.get(url, params=params)
+        pprint = res.json()
+        try:
+            user_dict = pprint['pprint']
+            for i in user_dict:
+                if 'city' in i:
+                    city = i.get('city')
+                    id = str(city.get('id'))
+                    return id
+                elif 'city' not in i:
+                    self.write_msg(user_id, 'Введите ваш населенный пункт: ')
+                    for event in self.longpoll.listen():
+                        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                            city_name = event.text
+                            id_city = self.cities(user_id, city_name)
+                            if id_city != '' or id_city != None:
+                                return str(id_city)
+                            else:
+                                break
+        except KeyError:
+            self.write_msg(user_id, 'Ошибка')
+
+    def find_user(self, user_id):
+        url = f'https://api.vk.com/method/users.search'
+        params = {'access_token': user_token,
+                  'v': '5.131',
+                  'sex': self.get_sex(user_id),
+                  'age_from': self.get_age_down(user_id),
+                  'age_to': self.get_age_high(user_id),
+                  'city': self.find_city(user_id),
+                  'fields': id, first_name, last_name',
+                  'status': '1' or '6',
+                  }
+        res = requests.get(url, params=params)
+        res_json = res.json()
+        try:
+            dict_1 = res_json['pprint']
+            dict_2 = dict_1['items']
+            for person_dict in dict_2:
+                if person_dict.get('is_closed') == False:
+                    first_name = person_dict.get('first_name')
+                    last_name = person_dict.get('last_name')
+                    vk_id = str(person_dict.get('id'))
+                    vk_link = 'vk.com/id' + str(person_dict.get('id'))
+                    insert_data_users(first_name, last_name, vk_id, vk_link)
+                else:
+                    continue
+            return f'Поиск завершён'
+        except KeyError:
+            self.write_msg(user_id, 'Ошибка')
+
+    def get_photos_id(self, user_id):
+        url = 'https://api.vk.com/method/photos.getAll'
+        params = {'access_token': user_token,
+                  'type': 'album',
+                  'owner_id': user_id,
+                  'extended': 1,
+                   'v': '5.131'}
+        resp = requests.get(url, params=params)
+        dict_photos = dict()
+        res_json = res.json()
+        try:
+            dict_1 = res_json['pprint']
+            dict_2 = dict_1['items']
+            for i in dict_2:
+                photo_id = str(i.get('id'))
+                i_like = i.get('like')
+                if i_like.get('count'):
+                    like = i_like.get('count')
+                    dict_photos[like] = photo_id
+            list_of_ids = photo(dict_photos.items(), reverse=True)
+            return list_of_ids
+        except KeyError:
+            self.write_msg(user_id, 'Ошибка')
+
+    def get_photo1(self, user_id):
+        list = self.get_photos_id(user_id)
+        count = 0
+        for i in list:
+            count += 1
+            if count == 1:
+                return i[1]
+
+    def get_photo2(self, user_id):
+        list = self.get_photos_id(user_id)
+        count = 0
+        for i in list:
+            count += 1
+            if count == 2:
+                return i[1]
+
+    def get_photo3(self, user_id):
+        list = self.get_photos_id(user_id)
+        count = 0
+        for i in list:
+            count += 1
+            if count == 3:
+                return i[1]
+
+    def send_photo1(self, user_id, message, offset):
+        self.vk.method('messages.send', {'user_id': user_id,
+                                         'access_token': user_token,
+                                         'message': message,
+                                         'attachment': f'photo{self.person_id(offset)}_{self.get_photo_1(self.person_id(offset))}',
+                                         'random_id': 0})
+
+    def send_photo2(self, user_id, message, offset):
+        self.vk.method('messages.send', {'user_id': user_id,
+                                         'access_token': user_token,
+                                         'message': message,
+                                         'attachment': f'photo{self.person_id(offset)}_{self.get_photo_2(self.person_id(offset))}',
+                                         'random_id': 0})
+
+    def send_photo3(self, user_id, message, offset):
+        self.vk.method('messages.send', {'user_id': user_id,
+                                         'access_token': user_token,
+                                         'message': message,
+                                         'attachment': f'photo{self.person_id(offset)}_{self.get_photo_3(self.person_id(offset))}',
+                                         'random_id': 0})
+
+    def find_peoples(self, user_id, offset):
+        self.write_msg(user_id, self.found_peoples_info(offset))
+        self.peoples_id(offset)
+        insert_data_seen_users(self.pejpls_id(offset), offset) #offset
+        self.get_photos_id(self.peoples_id(offset))
+        self.send_photo1(user_id, 'Фото 1', offset)
+        if self.get_photo2(self.person_id(offset)) != None:
+            self.send_photo2(user_id, 'Фото 2', offset)
+            self.send_photo3(user_id, 'Фото 3', offset)
+        else:
+            self.write_msg(user_id, f'Фото отсутствует')
+
+    def found_peoples_info(self, offset):
+        tuple_peoples = select(offset)
+        list_peoples = []
+        for i in tuple_peoples:
+            list_peoples.append(i)
+        return f'{list_peoples[0]} {list_peoples[1]}'
+
+    def peoples_id(self, offset):
+        tuple_peoples = select(offset)
+        list_peoples = []
+        for i in tuple_peoples:
+            list_peoples.append(i)
+        return str(list_peoples[2])
+
+
+import psycopg2
+conn = psycopg2.connect(database="diplom2308", user="postgres", password="postgres")
+with conn.cursor() as cur:
+cur.execute("""
+DROP table user;
+DROP table favorite_user;
+""")
+    cur.execute(""""
+            CREATE TABLE IF NOT EXISTS user (
+	        id_user INTEGER PRIMARY KEY,
+	        name_user VARCHAR(20) NOT NULL,
+            lastname_user VARCHAR(40),
+            age_user INTEGER,
+            city_user VARCHAR (30),
+            marriage_user INTEGER,
+            male_user INTEGER
+            );
+            """)
+
+    cur.execute (""""
+            CREATE TABLE IF NOT EXISTS favorite_user (
+	        id_favorit_user INTEGER PRIMARY key,
+	        name_favorit_user VARCHAR (20)	
+            ); "
+            """)
+conn.close()
+
+    cur.execute ("""
+    INSERT INTO user(id_user) RETURNING name_user, lastname_user, age_user, city_user, marriage_user, male_user;
+    """)
+
+    cur,execute ("""
+        SELECT * FROM user;
+        """)
+    print(cur.fetchmany(7))
+
+bot = VKBot()
