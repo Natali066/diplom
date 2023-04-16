@@ -1,0 +1,29 @@
+import vk_api
+from vk_api.longpoll import VkLongPoll, VkEventType
+from vk_api.utils import get_random_id
+
+from config import comunity_token
+
+def write_msg(user_id, message):
+    vk.method('messages.send', {'user_id': user_id, 'message': message})
+
+token = "vk1.a.dNojDDW48AEWikWCqn9pq8b4F5nL-D76wdCi4UOooav0kuXdsafTz797oqyOVgqxiD3oXTMWiZoE_YmQUgmcHeLLCiEMECDENFfuG8eZ5wo-WBIsTyqZVCxmtqt8ExuykoQnJl5gHtT8cD1dva49uCXkbiB0ENdpRvrb_Li6TfoqIvq9Hbmk02r4HE6HZDU_nMrVbfiqqllhtDsWZZqCxw"
+
+vk = vk_api.VkApi(token=token)
+
+longpoll = VkLongPoll(vk)
+
+for event in longpoll.listen():
+
+        if event.type == VkEventType.MESSAGE_NEW:
+
+        if event.to_me:
+
+            request = event.text
+
+           if request == "привет":
+                write_msg(event.user_id, "Привет!")
+            elif request == "До свидания", "пока":
+                write_msg(event.user_id, "До свидания", "Пока")
+            else:
+                write_msg(event.user_id, "Повтроите еще раз")
